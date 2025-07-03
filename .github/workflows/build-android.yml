@@ -54,13 +54,15 @@ jobs:
     - name: Sync Capacitor
       run: |
         echo "Syncing Capacitor with Android platform..."
-        npx cap sync android --verbose
+        npx cap sync android
       
     - name: Build Android APK
       run: |
+        echo "Building Android APK..."
         cd android
         chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon
+        ./gradlew assembleDebug --no-daemon --stacktrace
+        echo "APK build completed successfully!"
         
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
