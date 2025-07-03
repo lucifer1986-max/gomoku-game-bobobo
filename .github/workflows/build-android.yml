@@ -7,6 +7,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,17 +27,25 @@ jobs:
 
     - name: Verify Node.js version
       run: |
+        echo "=== Node.js Environment ==="
         node --version
         npm --version
+        echo "Node.js path: $(which node)"
+        echo "npm path: $(which npm)"
+        echo "Current directory: $(pwd)"
+        echo "=========================="
         
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '11'
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
       
     - name: Clear npm cache
       run: npm cache clean --force
@@ -49,7 +61,21 @@ jobs:
       
     - name: Verify Capacitor CLI version
       run: |
+        echo "=== Capacitor Environment ==="
         npx @capacitor/cli --version
+        echo "Capacitor config:"
+        cat capacitor.config.ts
+        echo "Project structure:"
+        ls -la
+        echo "=========================="
+
+    - name: Clean Android project
+      run: |
+        echo "Cleaning Android project..."
+        cd android
+        chmod +x ./gradlew
+        ./gradlew clean
+        cd ..
 
     - name: Sync Capacitor
       run: |
@@ -58,11 +84,23 @@ jobs:
       
     - name: Build Android APK
       run: |
+        echo "=== Android Build Process ==="
+        echo "Current directory: $(pwd)"
+        echo "Android directory contents:"
+        ls -la android/
+        echo "Checking gradlew file:"
+        ls -la android/gradlew
         echo "Building Android APK..."
         cd android
         chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon --stacktrace
+        echo "Gradle version:"
+        ./gradlew --version
+        echo "Starting APK build..."
+        ./gradlew assembleDebug --no-daemon --stacktrace --warning-mode all
+        echo "Checking build output:"
+        ls -la app/build/outputs/apk/debug/
         echo "APK build completed successfully!"
+        echo "=========================="
         
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
