@@ -14,7 +14,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
+    env:
+      SKIP_JDK_VERSION_CHECK: true
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -36,13 +39,25 @@ jobs:
         echo "=========================="
         
     - name: Setup Java JDK
+      id: setup-java
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
-        
+
+    - name: Verify Java Installation
+      run: |
+        echo "=== Java Environment ==="
+        java -version
+        javac -version
+        echo "JAVA_HOME: $JAVA_HOME"
+        echo "PATH: $PATH"
+        echo "=========================="
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      env:
+        SKIP_JDK_VERSION_CHECK: true
       
     - name: Clear npm cache
       run: npm cache clean --force
