@@ -55,9 +55,18 @@ jobs:
         echo "=========================="
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      env:
-        SKIP_JDK_VERSION_CHECK: true
+      run: |
+        echo "=== Setting up Android SDK manually ==="
+        export SKIP_JDK_VERSION_CHECK=true
+        export JAVA_HOME=${{ steps.setup-java.outputs.path }}
+        echo "JAVA_HOME set to: $JAVA_HOME"
+        echo "Using Java version:"
+        $JAVA_HOME/bin/java -version
+
+        # Accept Android SDK licenses
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        echo "Android SDK setup completed"
+        echo "=========================="
       
     - name: Clear npm cache
       run: npm cache clean --force
