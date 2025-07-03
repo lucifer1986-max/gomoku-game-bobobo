@@ -1,0 +1,274 @@
+.game-board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(45deg, #8B4513, #A0522D);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 1px;
+  background: #654321;
+  border: 2px solid #4A4A4A;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #DEB887, #D2B48C);
+  border: 1px solid #8B7355;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cell:hover:not(.occupied):not(.disabled) {
+  background: linear-gradient(135deg, #F0E68C, #DEB887);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.game-board.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.cell.disabled {
+  cursor: not-allowed;
+}
+
+.cell.last-move {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+  to { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+}
+
+.stone {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  position: relative;
+  animation: dropIn 0.3s ease-out;
+  cursor: default;
+}
+
+.stone.black {
+  background: radial-gradient(circle at 30% 30%, #4A4A4A, #000000);
+  border: 1px solid #333;
+}
+
+.stone.white {
+  background: radial-gradient(circle at 30% 30%, #FFFFFF, #E0E0E0);
+  border: 1px solid #CCC;
+}
+
+.stone-inner {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.stone-highlight {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+.stone.black .stone-highlight {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes dropIn {
+  0% {
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(90deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.star-point {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #8B4513;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.board-coordinates {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.row-numbers {
+  position: absolute;
+  left: -25px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.col-letters {
+  position: absolute;
+  top: -25px;
+  left: 30px;
+  display: flex;
+  gap: 1px;
+}
+
+.coordinate {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #654321;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .game-board {
+    padding: 15px;
+    max-width: 100vw;
+    overflow-x: auto;
+  }
+
+  .board-grid {
+    padding: 5px;
+    min-width: 375px; /* 确保棋盘不会太小 */
+  }
+
+  .cell {
+    width: 24px;
+    height: 24px;
+    /* 增加触摸区域 */
+    position: relative;
+  }
+
+  .cell::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+  }
+
+  .stone {
+    width: 21px;
+    height: 21px;
+  }
+
+  .coordinate {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .row-numbers {
+    left: -18px;
+  }
+
+  .col-letters {
+    top: -18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-board {
+    padding: 10px;
+  }
+
+  .board-grid {
+    min-width: 320px;
+  }
+
+  .cell {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cell::before {
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+  }
+
+  .stone {
+    width: 17px;
+    height: 17px;
+  }
+
+  .coordinate {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  .row-numbers {
+    left: -16px;
+  }
+
+  .col-letters {
+    top: -16px;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+  .cell {
+    /* 增强触摸反馈 */
+    transition: all 0.1s ease;
+  }
+
+  .cell:active:not(.occupied):not(.disabled) {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    transform: scale(0.95);
+  }
+
+  .stone {
+    /* 防止触摸时的闪烁 */
+    pointer-events: none;
+  }
+}

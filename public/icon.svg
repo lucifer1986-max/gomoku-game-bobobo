@@ -1,0 +1,31 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="512" height="512" fill="#667eea"/>
+  
+  <!-- 棋盘背景 -->
+  <rect x="56" y="56" width="400" height="400" fill="#D2B48C" rx="20"/>
+  
+  <!-- 棋盘线条 -->
+  <defs>
+    <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+      <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#8B4513" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect x="56" y="56" width="400" height="400" fill="url(#grid)"/>
+  
+  <!-- 黑棋 -->
+  <circle cx="156" cy="156" r="18" fill="#2C3E50"/>
+  <circle cx="206" cy="206" r="18" fill="#2C3E50"/>
+  <circle cx="256" cy="256" r="18" fill="#2C3E50"/>
+  <circle cx="306" cy="306" r="18" fill="#2C3E50"/>
+  <circle cx="356" cy="356" r="18" fill="#2C3E50"/>
+  
+  <!-- 白棋 -->
+  <circle cx="181" cy="156" r="18" fill="#FFFFFF" stroke="#2C3E50" stroke-width="2"/>
+  <circle cx="231" cy="206" r="18" fill="#FFFFFF" stroke="#2C3E50" stroke-width="2"/>
+  <circle cx="281" cy="256" r="18" fill="#FFFFFF" stroke="#2C3E50" stroke-width="2"/>
+  <circle cx="331" cy="306" r="18" fill="#FFFFFF" stroke="#2C3E50" stroke-width="2"/>
+  
+  <!-- 标题文字 -->
+  <text x="256" y="480" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="36" font-weight="bold">五子棋</text>
+</svg>
